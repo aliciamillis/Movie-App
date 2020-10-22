@@ -12,19 +12,14 @@ response body = a JSON object holding all the data about all movies in the list
     genre: 'drama',
     description: 'In an ordinary suburban house, on a lovely tree-lined street, in the middle of 1970s America, lived the five beautiful, dreamy Lisbon sisters, whose doomed fates indelibly marked the neighborhood boys who to this day continue to obsess over them. A story of love and repression, fantasy and terror, sex and death, memory and longing. It is at its core a mystery story: a heart-rending investigation into the impenetrable, life-altering secrets of American adolescence.',
     featured: 'No',
-    director: {
-      name: 'Sofia Coppola',
-      birthday: ' May 14, 1971',
-      bio: 'Sofia Carmina Coppola is an American screenwriter, director, producer, and actress. The daughter of filmmakers Eleanor and Francis Ford Coppola, she made her film debut as an infant in her fathers acclaimed crime drama film, The Godfather.',
-      death: 'n/a'
-    }
+    director: 'Sofia Coppola'
   },
 
 2.
 Endpoint = a return of data about a single movie, by title
-URL = localhost:8080/movies/[title]
+URL = localhost:8080/movies/title/[title]
 method type = GET
-query parameters = /movies/[title]
+query parameters = /movies/title/:title
 request body = n/a
 response body = a JSON object holding the data of a single movie based on title
     example:
@@ -33,98 +28,103 @@ response body = a JSON object holding the data of a single movie based on title
       genre: 'crime',
       description: 'Shortly after moving to Florida, longtime prostitute Aileen Wuornos (Charlize Theron) meets young and reserved Selby Wall (Christina Ricci) and a romance blossoms. When a john (Lee Tergesen) attempts to brutalize Aileen, she kills him and resolves to give up prostitution. But supporting herself and her new girlfriend through legitimate means proves extremely difficult, and she soon falls back on old ways. More johns die, and Selby cant help but think her new friend iresponsible.',
       featured: 'No',
-      director: {
-        name: 'Patty Jenkins',
-        birthday: 'July 24, 1971',
-        bio: 'Patricia Lea Jenkins is an American director and screenwriter. She directed and wrote the films Monster, Wonder Woman, and the upcoming Wonder Woman 1984.',
-        death: 'n/a',
-      }
+      director:'Patty Jenkins'
     }
 
 3.
 Endpoint = a return of data about a movies genre, by title of movie
-URL = localhost:8080/movies/[title]/[genre]
+URL = localhost:8080/movies/genres/[genre]
 method type = GET
-query parameters = movies/:genre
+query parameters = movies/genres/:genre
 request body = n/a
 response body = a JSON object holding a single movie by its title and genre.
   example:
   title: 'Knives Out',
   genre: 'mystery',
-
-  4.
+4.
   Endpoint = a return of data about the director, by name
-  URL = localhost:8080/movies/[director]/[name]
+  URL = localhost:8080/movies/directors/[director]
   method type = GET
-  query parameters = movies/:directors/:name
+  query parameters = movies/directors/:director //* must have spaces in their name *//
   request body = n/a
-  reponse body = a JSON object holding teh information of a director by their name
+  reponse body = a JSON object holding the information of a director by their name
     example:
-    director: {
-      name: 'Quentin Tarantino',
-      birthday: 'March 27, 1963',
-      bio: 'Quentin Jerome Tarantino is an American film director, screenwriter, producer, and actor. His films are characterized by nonlinear storylines, aestheticization of violence, extended scenes of dialogue, ensemble casts, references to popular culture and a wide variety of other films, soundtracks primarily containing songs and score pieces from the 1960s to the 1980s, alternate history, and features of neo-noir film.',
-      death: 'n/a'
-    }
+    {
+    "title": "Kill Bill Vol 1 & Vol 2",
+    "genre": "action",
+    "description": "A pregnant assassin, code-named The Bride, goes into a coma for four years after her ex-boss Bill brutally attacks her. When she wakes up, she sets out to seek revenge on him and his associates.",
+    "featured": "No",
+    "director": "Quentin Tarantino"
+}
 
 5.
 Endpoint = Allow new users to join API
-URL = localhost:8080/movies/users
+URL = localhost:8080/users
 method type = POST
-query parameters = movies/:users
+query parameters = /users //* must include name, password, email and dob*//
 request body = a JSON object holding data about user information
   example:
-  name: 'Alicia Millis',
-  password: 'angel',
-  fav_movies: {
-    1: 'Kill Bill',
-    2: 'The Village'
-  }
+  {
+  "name": "Jane Doe",
+  "password": "dog",
+  "email": "jane.doe@gmail.com",
+  "dob": "12/12/1912"
+ }
 response body = a JSON object holding data about the new user information including an uuid
   example:
   {
-    id: 2,
-    name: 'Ivy Millis',
-    password: 'Teeboo',
-    fav_movies: 'Little Feet'
-  }
+    "name": "Jane Doe",
+    "password": "dog",
+    "email": "jane.doe@gmail.com",
+    "dob": "12/12/1912",
+    "id": "6da05320-7589-4dae-8fc4-2468f1667f3b"
+}
 
 6.
-Endpoint = allow users to update their information on their profile
-URL = localhost:8080/movies/users
+Endpoint = allow users to add a favorite movie
+URL = localhost:8080/users/[id]/addFavorite/[movie title]
 Method type = PUT
-query parameters = /movies/:users
+query parameters = /users/:id/addFavorite/:movie
 request body = n/a
-response body = a text message saying "User [name] password is now [  ]"
+response body = a JSON object holding data abut the movie added to favorites list
   example:
-  "User Alicia Millis password is now angel"
+  {
+    "id": "1",
+    "name": "Alicia Millis",
+    "password": "angel",
+    "email": "alicia.millis@gmail.com",
+    "dob": "11/13/1983",
+    "favorites": [
+        "movie",
+        "Kill Bill"
+    ]
+}
 
 7.
-Endpoint = allow user to add movies to their favourite movie list
-URL = localhost:8080/movies/users/fav_movies
+Endpoint = allow user to remove movies from their favourite movie list
+URL = localhost:8080/users/[id]/removeFavorite/[movie]
 Method Type = PUT
-query parameters = /movies/:users/:fav_movies
+query parameters = /users/:id/removeFavorite/:movie
 request body = n/a
-response body = text message saying "User [name] favorite movie is now [  ]"
+response body = a JSON object holding data about the favorite movie removed
   example:
-  "User Alicia Millis favorite movie is now Kill Bill."
+  {
+      "id": "1",
+      "name": "Alicia Millis",
+      "password": "angel",
+      "email": "alicia.millis@gmail.com",
+      "dob": "11/13/1983",
+      "favorites": [
+          "Kill Bill"
+      ]
+  }
 
 8.
-Endpoint = allow user to remove a movie from their favorite movie list
-URL = localhost:8080/movies/users/fav_movies
-Method type = Delete
-query parameters = /movies/:users/:fav_movies
-request body = n/a
-response body = text message saying "User [name] [fav_movies] was deleted"
-  example:
-  "User Ivy Millis favorite movie Little Feet was deleted."
-
-9.
 Endpoint = allow user to remove their profile
-URL = localhost:8080/movies/users
+URL = localhost:8080/users/[id]
 Method type = Delete
-query parameters = /movies/:users
+query parameters = /users/:id
 request body = n/a
-response body = text message saying "User [name] was deleted"
+response body = text message saying "User [id] was deleted"
   example:
-  User Alicia Millis was deleted. 
+  User 1 was deleted.
