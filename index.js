@@ -1,3 +1,11 @@
+const mongoose = require('mongoose');
+const Models = require('./models.js');
+
+const Movies = Models.Movie;
+const Users = Models.User;
+
+mongoose.connect('mongodb://localhost:27017/Movie_API', { useNewUrlParser: true, useUnifiedTopology: true});
+
 const express = require('express'),
   morgan = require('morgan');
   bodyParser = require('body-parser'),
@@ -24,11 +32,18 @@ let users = [
     email: 'ivy.marie.millis@gmail.com',
     dob: '04/26/2009'
   }
+  {
+    id: '3',
+    name: 'Ayla Millis',
+    password: 'Cadeau',
+    email: 'ayla.mei.millis@gmail.com',
+    dob: '02/25/2011'
+  }
 ];
 
 let topMovies = [
   {
-    title: 'Kill Bill Vol 1 & Vol 2',
+    title: 'Kill Bill Vol 1',
     genre: 'action',
     description: 'A pregnant assassin, code-named The Bride, goes into a coma for four years after her ex-boss Bill brutally attacks her. When she wakes up, she sets out to seek revenge on him and his associates.',
     featured: 'No',
@@ -36,7 +51,7 @@ let topMovies = [
   },
   {
     title: 'Silence of the Lambs',
-    genre: 'horror',
+    genre: 'thriller',
     description: 'Clarice Starling, an FBI agent, seeks help from Hannibal Lecter, a psychopathic serial killer and former psychiatrist, in order to apprehend another serial killer who has been claiming female victims.',
     featured: 'No',
     director: 'Jonathan Demme'
@@ -92,7 +107,7 @@ let topMovies = [
   },
   {
     title: 'Monster',
-    genre: 'crime',
+    genre: 'mystery',
     description: 'Shortly after moving to Florida, longtime prostitute Aileen Wuornos (Charlize Theron) meets young and reserved Selby Wall (Christina Ricci) and a romance blossoms. When a john (Lee Tergesen) attempts to brutalize Aileen, she kills him and resolves to give up prostitution. But supporting herself and her new girlfriend through legitimate means proves extremely difficult, and she soon falls back on old ways. More johns die, and Selby cant help but think her new friend iresponsible.',
     featured: 'No',
     director: 'Patty Jenkins'
@@ -135,19 +150,38 @@ app.get('/movies/directors/:director', (req, res) => {
 });
 
 //add new user
-
+//* We'll expect JSON in this format
+//{
+//  ID: Integer,
+  //Username: String,
+  //Password: String,
+  //Email: String,
+  //Birthday: Date
+//}
 app.post('/users', (req, res) => {
-  let newUser = req.body;
-
-  if (!newUser.name) {
-    const message = 'Missing name in request body';
-    res.status(400).send(message);
-  } else {
-    console.log('new user:', newUser)
-    newUser.id = uuid.v4();
-    users.push(newUser);
-    res.status(201).send(newUser);
-  }
+  Users.findOne({ Username: req.body.Username })
+    .then((user) => {
+      if (user) {
+        return res.status(400).send(req.body.Username + 'already exsits');
+      } else {
+        Users
+          .create({
+            Username: req.body.Username,
+            Password: req.body.Password,
+            Email: req.body.Email,
+            Birthday: req.body.Birthday
+          })
+          .then((user) =>{res.status(201).json(user) })
+          .catch((error) => {
+            console.error(error);
+            res.status(500).send('Error: ' + error);
+          })
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
+    });
 });
 
 // get new user and add fav movie
