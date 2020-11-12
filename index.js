@@ -154,9 +154,9 @@ app.get('/movies/title/:Title', (req, res) => {
 //get movies by genre
 
 app.get('/movies/genres/:genre', (req, res) => {
-  Genres.find({ Name: req.params.Name })
-    .then((genre) => {
-      res.json(genre);
+  Movies.findOne({ Genre: req.params.Genres})
+    .then((movie) => {
+      res.json(movie);
     })
     .catch((err) => {
       console.error(err);
@@ -167,9 +167,9 @@ app.get('/movies/genres/:genre', (req, res) => {
 //get director info from name
 
 app.get('/movies/directors/:director', (req, res) => {
-  Directos.find({ Name: req.params.Name })
-    .then((director) => {
-      res.json(director);
+  Movies.findOne({ Director: req.params.Directors })
+    .then((movie) => {
+      res.json(movie);
     })
     .catch((err) => {
       console.error(err);
@@ -212,7 +212,7 @@ app.put('/users/:Username', (req, res) => {
       {
         Username: req.body.Username,
         Password: req.body.Password,
-        Email: req.bosy.Email,
+        Email: req.body.Email,
         Birthday: req.body.Birthday
       }
     },
