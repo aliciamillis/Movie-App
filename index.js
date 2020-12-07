@@ -153,8 +153,8 @@ app.get('/movies/title/:Title', (req, res) => {
 
 //get movies by genre
 
-app.get('/movies/genres/:genre', (req, res) => {
-  Movies.findOne({ Genre: req.params.Genres})
+app.get('/movies/genres/:Genre', (req, res) => {
+  Movies.find({Genre: req.params.Genres})
     .then((movie) => {
       res.json(movie);
     })
