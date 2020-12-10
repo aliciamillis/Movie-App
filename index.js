@@ -153,8 +153,8 @@ app.get('/movies/title/:Title', (req, res) => {
 
 //get movies by genre
 
-app.get('/movies/genres/:Genre', (req, res) => {
-  Movies.find({Genre: req.params.Genres})
+app.get('/movies/genre/:Genre', (req, res) => {
+  Movies.findOne({Genre: req.params.Genre})
     .then((movie) => {
       res.json(movie);
     })
@@ -166,8 +166,8 @@ app.get('/movies/genres/:Genre', (req, res) => {
 
 //get director info from name
 
-app.get('/movies/directors/:director', (req, res) => {
-  Movies.findOne({ Director: req.params.Directors })
+app.get('/movies/director/:director', (req, res) => {
+  Movies.findOne({ Director: req.params.Director })
     .then((movie) => {
       res.json(movie);
     })
