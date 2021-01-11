@@ -3,6 +3,8 @@ const Models = require('./models.js');
 
 const Movies = Models.Movie;
 const Users = Models.User;
+const Directors = Models.Director;
+const Genres = Models.Genre;
 
 const express = require('express');
 const morgan = require('morgan');
@@ -11,7 +13,7 @@ const uuid = require('uuid');
 
 const app = express();
 
-mongoose.connect('mongodb://localhost:27017/Movie_API', {
+mongoose.connect('mongodb://localhost:27017/movie_api', {
   useNewUrlParser: true,
   useUnifiedTopology: true});
 
@@ -153,8 +155,8 @@ app.get('/movies/title/:Title', (req, res) => {
 
 //get movies by genre
 
-app.get('/movies/genre/:Genre', (req, res) => {
-  Movies.findOne({Genre: req.params.Genre})
+app.get('/movies/genre/:Genre.Name', (req, res) => {
+  Movies.findOne({ Name: req.params.Name})
     .then((movie) => {
       res.json(movie);
     })
@@ -166,10 +168,10 @@ app.get('/movies/genre/:Genre', (req, res) => {
 
 //get director info from name
 
-app.get('/movies/director/:director', (req, res) => {
-  Movies.findOne({ Director: req.params.Director })
-    .then((movie) => {
-      res.json(movie);
+app.get('/directors/:Name', (req, res) => {
+  Directors.findOne({ Name: req.params.Name })
+    .then((director) => {
+      res.json(director);
     })
     .catch((err) => {
       console.error(err);
@@ -241,7 +243,7 @@ app.get('/users', function (req, res) {
 });
 
 // allow user to add movie to fav list
-app.put('/users/:Username/Movies/:MovieID', (req, res) => {
+app.post('/users/:Username/Movies/:MovieID', (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.Username}, {
     $push: { FavoriteMovies: req.params.MovieID }
   },
@@ -251,7 +253,7 @@ app.put('/users/:Username/Movies/:MovieID', (req, res) => {
       console.error(err);
       res.status(500).send('Error: ' + err);
     } else {
-      res.json(updatedUser);
+      res.json(updatedUser)
     }
   });
 });
@@ -259,7 +261,7 @@ app.put('/users/:Username/Movies/:MovieID', (req, res) => {
 
 // user can remove favorite movie from list
 
-app.put('/users/:Username/Movies/:MovieID', (req, res) => {
+app.post('/users/:Username/Movies/:MovieID', (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.Username}, {
     $pull: { FavoriteMovies: req.params.MovieID }
   },
