@@ -1,4 +1,4 @@
-This is the documentation file.
+,This is the documentation file.
 1.
 Endpoint = a return of a list of all movies
 URL = localhost:8080/movies
@@ -24,12 +24,20 @@ request body = n/a
 response body = a JSON object holding the data of a single movie based on title
     example:
     {
-      title: 'Monster',
-      genre: 'crime',
-      description: 'Shortly after moving to Florida, longtime prostitute Aileen Wuornos (Charlize Theron) meets young and reserved Selby Wall (Christina Ricci) and a romance blossoms. When a john (Lee Tergesen) attempts to brutalize Aileen, she kills him and resolves to give up prostitution. But supporting herself and her new girlfriend through legitimate means proves extremely difficult, and she soon falls back on old ways. More johns die, and Selby cant help but think her new friend iresponsible.',
-      featured: 'No',
-      director:'Patty Jenkins'
-    }
+    "Genre": {
+        "Name": "Science Fiction",
+        "Description": "Science fiction is a genre of speculative fiction that typically deals with imaginative and futuristic concepts such as advanced science and technology, space exploration, time travel, parallel universes, and extraterrestrial life."
+    },
+    "Actors": [],
+    "_id": "5fa58b2e07ec856a6f0e8849",
+    "Title": "Inception",
+    "Description": "Cobb steals information from his targets by entering their dreams. Saito offers to wipe clean Cobbs criminal history as payment for performing an inception on his sick competitors son.",
+    "Director": "Christopher Nolan",
+    "ImagePath": "inception.png",
+    "Featured": false,
+    "Bio": "Christopher Nolan is a British American fil director, producer and screenwriter known for making personal, distinctive films within the Hollywood mainstream. His directorial efforts have grossed more than US$5 billion worldwide, garnered 34 Oscar nominations and ten wins.",
+    "Birth": "1970-07-30"
+}
 
 3.
 Endpoint = a return of data about a movies genre, by title of movie
@@ -39,23 +47,32 @@ query parameters = movies/genres/:genre
 request body = n/a
 response body = a JSON object holding a single movie by its title and genre.
   example:
-  title: 'Knives Out',
-  genre: 'mystery',
+  {
+    "Genre": {
+        "Name": "Thriller",
+        "Description": "Thriller is a genre of fiction, having numerous, often overlapping subgenres. Thrillers are characterized and defined by the moods they elicit, giving viewers heightened feelings of suspense, excitement, surprise, anticipation and anxiety."
+    },
+    "Actors": [],
+    "_id": "5fa5848507ec856a6f0e8847",
+    "Title": "Silence of the Lambs",
+    "Description": "'Clarice Starling, an FBI agent, seeks help from Hannibal Lecter, a psychopathic serial killer and former psychiatrist, in order to apprehend another serial killer who has been claiming female victims.",
+    "Director": "Jonathan Demme",
+    "ImagePath": "silenceofthelambs.png",
+    "Featured": false,
+    "Bio": "Robert Jonathan Demme was an American film director, producer and screenwriter of film and television who earned widespread acclaim.",
+    "Birth": "1944-02-22"
+}
+
 4.
   Endpoint = a return of data about the director, by name
-  URL = localhost:8080/movies/directors/[director]
+  URL = localhost:8080/directors/[name]
   method type = GET
-  query parameters = movies/directors/:director //* must have spaces in their name *//
+  query parameters = directors/:name //* must have spaces in their name *//
   request body = n/a
-  reponse body = a JSON object holding the information of a director by their name
+  reponse body = a JSON object holding the bio of a director by their name
     example:
-    {
-    "title": "Kill Bill Vol 1 & Vol 2",
-    "genre": "action",
-    "description": "A pregnant assassin, code-named The Bride, goes into a coma for four years after her ex-boss Bill brutally attacks her. When she wakes up, she sets out to seek revenge on him and his associates.",
-    "featured": "No",
-    "director": "Quentin Tarantino"
-}
+    "Christopher Nolan is a British American fil director, producer and screenwriter known for making personal, distinctive films within the Hollywood mainstream. His directorial efforts have grossed more than US$5 billion worldwide, garnered 34 Oscar nominations and ten wins."
+
 
 5.
 Endpoint = Allow new users to join API
@@ -65,66 +82,78 @@ query parameters = /users //* must include name, password, email and dob*//
 request body = a JSON object holding data about user information
   example:
   {
-  "name": "Jane Doe",
-  "password": "dog",
-  "email": "jane.doe@gmail.com",
-  "dob": "12/12/1912"
+  "Username": "Jane Doe",
+  "Password": "dog",
+  "Email": "jane.doe@gmail.com",
+  "Birthday": "12/12/1912"
  }
 response body = a JSON object holding data about the new user information including an uuid
   example:
   {
-    "name": "Jane Doe",
-    "password": "dog",
-    "email": "jane.doe@gmail.com",
-    "dob": "12/12/1912",
-    "id": "6da05320-7589-4dae-8fc4-2468f1667f3b"
+    "FavoriteMovies": [],
+    "_id": "600095976b242f37f3fc945e",
+    "Username": "John Doe",
+    "Password": "dog",
+    "Email": "john.doe@gmail.com",
+    "Birthday": "1912-12-22T07:00:00.000Z",
+    "__v": 0
 }
 
 6.
+Endpoint = Update User Info
+
+7.
 Endpoint = allow users to add a favorite movie
-URL = localhost:8080/users/[id]/addFavorite/[movie title]
-Method type = PUT
-query parameters = /users/:id/addFavorite/:movie
-request body = n/a
+URL = localhost:8080/users/[username]/movies/[movie id]
+Method type = POST
+query parameters = /users/:name/movies/:movieid
+request body =
+{
+  "FavoriteMovies": [{ "_id": "movieid#" }]
+}
 response body = a JSON object holding data abut the movie added to favorites list
   example:
   {
-    "id": "1",
-    "name": "Alicia Millis",
-    "password": "angel",
-    "email": "alicia.millis@gmail.com",
-    "dob": "11/13/1983",
-    "favorites": [
-        "movie",
-        "Kill Bill"
-    ]
+    "FavoriteMovies": [
+        "5fa58b2e07ec856a6f0e8849"
+    ],
+    "_id": "600095976b242f37f3fc945e",
+    "Username": "John Doe",
+    "Password": "dog",
+    "Email": "john.doe@gmail.com",
+    "Birthday": "1912-12-22T07:00:00.000Z",
+    "__v": 0
 }
 
-7.
+8.
 Endpoint = allow user to remove movies from their favourite movie list
-URL = localhost:8080/users/[id]/removeFavorite/[movie]
+URL = localhost:8080/users/[username]/movies/[movieid]
 Method Type = PUT
-query parameters = /users/:id/removeFavorite/:movie
-request body = n/a
+query parameters = /users/:username/movies/:movieid
+request body =
+{
+  "FavoriteMovies": [{ "_id": "movieid#" }]
+}
 response body = a JSON object holding data about the favorite movie removed
   example:
   {
-      "id": "1",
-      "name": "Alicia Millis",
-      "password": "angel",
-      "email": "alicia.millis@gmail.com",
-      "dob": "11/13/1983",
-      "favorites": [
-          "Kill Bill"
-      ]
-  }
+    "FavoriteMovies": [
+        "5fa58b2e07ec856a6f0e8849"
+    ],
+    "_id": "600095976b242f37f3fc945e",
+    "Username": "John Doe",
+    "Password": "dog",
+    "Email": "john.doe@gmail.com",
+    "Birthday": "1912-12-22T07:00:00.000Z",
+    "__v": 0
+}
 
-8.
+9.
 Endpoint = allow user to remove their profile
-URL = localhost:8080/users/[id]
+URL = localhost:8080/users/[username]
 Method type = Delete
-query parameters = /users/:id
+query parameters = /users/:username
 request body = n/a
-response body = text message saying "User [id] was deleted"
+response body = text message saying "User [username] was deleted"
   example:
-  User 1 was deleted.
+  User Jane Doe was deleted.
