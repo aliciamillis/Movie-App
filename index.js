@@ -3,8 +3,8 @@ const Models = require('./models.js');
 
 const Movies = Models.Movie;
 const Users = Models.User;
-const Directors = Models.Director;
-const Genres = Models.Genre;
+// const Directors = Models.Director;
+// const Genres = Models.Genre;
 
 const express = require('express');
 const morgan = require('morgan');
