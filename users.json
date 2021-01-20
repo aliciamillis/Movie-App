@@ -1,0 +1,5 @@
+{"_id":{"$oid":"5fa5948f07ec856a6f0e8851"},"Name":"Alicia Millis","Password":"angel","Email":"alicia.millis@gmail.com","Birthday":{"$date":"1983-11-13T00:00:00Z"},"FavoriteMovies":[{"$oid":"5fa589c107ec856a6f0e8848"},{"$oid":"5fa58e7d07ec856a6f0e884a"}]}
+{"_id":{"$oid":"5fa5953007ec856a6f0e8852"},"Name":"Ivy Millis","Password":"Teeboo","Email":"ivy.marie.millis@gmail.com","Birthday":{"$date":"2009-04-26T00:00:00Z"},"FavoriteMovies":[{"$oid":"5fa58f6907ec856a6f0e884b"}]}
+{"_id":{"$oid":"5fa5959d07ec856a6f0e8853"},"Name":"Ayla Millis","Password":"Cadeau","Email":"ayla.mei.millis@gmail.com","Birthday":{"$date":"2011-02-25T00:00:00Z"},"FavoriteMovies":[{"$oid":"5fa5848507ec856a6f0e8847"}]}
+{"_id":{"$oid":"5fa595f707ec856a6f0e8854"},"Name":"Jane Doe","Password":"dead","Email":"jane.doe@gmail.com","Birthday":{"$date":"1977-05-23T00:00:00Z"},"FavoriteMovies":[{"$oid":"5fa590d507ec856a6f0e884d"}]}
+{"_id":{"$oid":"600095976b242f37f3fc945e"},"FavoriteMovies":[],"Username":"John Doe","Password":"dog","Email":"john.doe@gmail.com","Birthday":{"$date":{"$numberLong":"-1799600400000"}},"__v":0}
