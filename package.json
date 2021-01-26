@@ -32,6 +32,8 @@
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
     "save": "^2.4.0",
     "uuid": "^8.3.2"
   },
