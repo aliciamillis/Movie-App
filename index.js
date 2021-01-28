@@ -55,7 +55,7 @@ app.get('/documentation', (req, res) => {
 });
 
 //return all movies
-app.get('/movies', passport.authenticate('jwt', { session: false}), (req, res) => {
+app.get('/movies', (req, res) => {
   Movies.find()
     .then((movies) => {
       res.status(201).json(movies);
@@ -211,7 +211,7 @@ app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { sess
 });
 
 
-// user can remove favorite movie from list  CAB"T GET THIS ONE TO WORK
+// user can remove favorite movie from list
 
 app.delete('/users/:Username/Movies/:MovieID', passport.authenticate('jwt', { session: false}), (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.Username}, {
