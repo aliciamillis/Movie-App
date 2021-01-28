@@ -41,33 +41,21 @@ response body = a JSON object holding the data of a single movie based on title
 
 3.
 Endpoint = a return of data about a movies genre, by title of movie
-URL = localhost:8080/movies/genres/[genre]
+URL = localhost:8080/movies/genres/[movie title]
 method type = GET
-query parameters = movies/genres/:genre
+query parameters = movies/genres/:title
 request body = n/a
-response body = a JSON object holding a single movie by its title and genre.
+response body = a JSON object holding a genre description by movie title.
   example:
   {
-    "Genre": {
-        "Name": "Thriller",
-        "Description": "Thriller is a genre of fiction, having numerous, often overlapping subgenres. Thrillers are characterized and defined by the moods they elicit, giving viewers heightened feelings of suspense, excitement, surprise, anticipation and anxiety."
-    },
-    "Actors": [],
-    "_id": "5fa5848507ec856a6f0e8847",
-    "Title": "Silence of the Lambs",
-    "Description": "'Clarice Starling, an FBI agent, seeks help from Hannibal Lecter, a psychopathic serial killer and former psychiatrist, in order to apprehend another serial killer who has been claiming female victims.",
-    "Director": "Jonathan Demme",
-    "ImagePath": "silenceofthelambs.png",
-    "Featured": false,
-    "Bio": "Robert Jonathan Demme was an American film director, producer and screenwriter of film and television who earned widespread acclaim.",
-    "Birth": "1944-02-22"
+    "Science Fiction. Science fiction is a genre of speculative fiction that typically deals with imaginative and futuristic concepts such as advanced science and technology, space exploration, time travel, parallel universes, and extraterrestrial life."
 }
 
 4.
   Endpoint = a return of data about the director, by name
-  URL = localhost:8080/directors/[name]
+  URL = localhost:8080/movies/directors/[director name]
   method type = GET
-  query parameters = directors/:name //* must have spaces in their name *//
+  query parameters = /movies/directors/:director //* must have spaces in their name *//
   request body = n/a
   reponse body = a JSON object holding the bio of a director by their name
     example:
