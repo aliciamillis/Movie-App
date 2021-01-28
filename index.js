@@ -10,7 +10,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const uuid = require('uuid');
 
-// mongoose.connect('mongodb://localhost:27017/Movie_API', { useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect('mongodb://localhost:27017/Movie_API', { useNewUrlParser: true, useUnifiedTopology: true});
 
 mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -79,30 +79,28 @@ app.get('/movies/title/:Title', (req, res) => {
   });
 });
 
-//get movies by genre
-
-app.get('/movies/genre/:Genre', passport.authenticate('jwt', { session: false}), (req, res) => {
-  Movies.findOne({ Name: req.params.Name})
-    .then((movie) => {
-      res.json(movie);
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send("Error: " + err);
-    });
+//get information about a genre, by name/title of movie
+app.get('/movies/Genres/:Title', passport.authenticate('jwt', { session: false }), (req, res) => {
+    Movies.findOne({ Title: req.params.Title })
+        .then((movie) => {
+            res.status(201).json(movie.Genre.Name + '. ' + movie.Genre.Description);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
 });
 
-//get director info from name
-
-app.get('/directors/:Name', passport.authenticate('jwt', { session: false}), (req, res) => {
-  Movies.findOne({ Director: req.params.Name })
-    .then((movie) => {
-      res.json(movie.Bio);
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send("Error: " + err);
-    });
+//Returns information about a director, by name
+app.get('/movies/Directors/:Director', passport.authenticate('jwt', { session: false }), (req, res) => {
+    Movies.findOne({ Director: req.params.Director })
+        .then((movie) => {
+            res.status(201).json(movie.Director + ': ' + movie.Bio + ',' + movie.Birth);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
 });
 
 //Add a user
@@ -120,6 +118,7 @@ app.post('/users',
   }
 
   let hashedPassword = Users.hashPassword(req.body.Password);
+
   Users.findOne({ Username: req.body.Username })
     .then((user) => {
       if (user) {
@@ -149,38 +148,38 @@ app.post('/users',
 
 app.put('/users/:Username',
     [
-        check('Username', 'Username is required').isLength({min:5}),
-        check('Username', 'Username contains non alphanumeric characters - not allowed').isAlphanumeric(),
+        check('Username', 'Username is required').isLength({ min: 5 }),
+        // check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
         check('Password', 'Password is required').not().isEmpty(),
         check('Email', 'Email does not appear to be valid').isEmail()
     ], (req, res) => {
+        let errors = validationResult(req);
 
-    let errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).json({ errors: errors.array() });
+        }
 
-    if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() });
-    }
+        let hashedPassword = Users.hashPassword(req.body.Password);
 
-    let hashedPassword = Users.hashPassword(req.body.Password);
-
-    Users.findOneAndUpdate({ Username: res.params.Username },
-    		{ $set: {
-    			Username: req.body.Username,
-    			Password: hashedPassword,
-    			Email: req.body.Email,
-    			Birthday: req.body.Birthday
-    		}
-  	 },
-  	{ new: true }, // Returns the updated document
-  	(error, updatedUser) => {
-    		if (error) {
-    			console.error(error);
-    			res.status(500).send('Error: ' + error);
-    		} else {
-    			res.status(201).json(updatedUser);
-    		}
-  	});
-});
+        Users.findOneAndUpdate({ Username: req.params.Username }, {
+            $set:
+            {
+                Username: req.body.Username,
+                Password: hashedPassword,
+                Email: req.body.Email,
+                Birthday: req.body.Birthday
+            }
+        },
+            { new: true },
+            (err, updatedUser) => {
+                if (err) {
+                    console.error(err);
+                    res.status(500).send('Error: ' + err);
+                } else {
+                    res.status(201).json(updatedUser);
+                }
+            });
+    });
 
 //GET user with /user
 

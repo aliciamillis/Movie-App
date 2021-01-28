@@ -101,6 +101,27 @@ response body = a JSON object holding data about the new user information includ
 
 6.
 Endpoint = Update User Info
+URL = localhost:8080/users/[username]
+method type = PUT
+query paramaters = /users/:username //* must include name, password, email and dob*//
+request body =  a JSON object holding data about user information
+  example:
+  {
+  "Username": "Jane Doe",
+  "Password": "dog",
+  "Email": "jane.doe@gmail.com",
+  "Birthday": "12/12/1912"
+ }
+response body = a JSON object holding data about the new user information
+{
+  "FavoriteMovies": [],
+  "_id": "600095976b242f37f3fc945e",
+  "Username": "John Doe",
+  "Password": "dog",
+  "Email": "john.doe@gmail.com",
+  "Birthday": "1912-12-22T07:00:00.000Z",
+  "__v": 0
+}
 
 7.
 Endpoint = allow users to add a favorite movie
