@@ -29,7 +29,7 @@ require('./passport');
 
 // const cors = require('cors');
 
-let allowedOrigins = *;
+let allowedOrigins = [*];
 
 const { check, validationResult } = require('express-validator');
 
