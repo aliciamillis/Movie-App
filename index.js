@@ -29,7 +29,7 @@ require('./passport');
 
 const cors = require('cors');
 
-let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'http://localhost:1234'];
+let allowedOrigins = [*];
 
 const { check, validationResult } = require('express-validator');
 
@@ -55,7 +55,7 @@ app.get('/documentation', (req, res) => {
 });
 
 //return all movies
-app.get('/movies', (req, res) => {
+app.get('/movies', passport.authenticate('jwt', { session: false}), (req, res) => {
   Movies.find()
     .then((movies) => {
       res.status(201).json(movies);
@@ -68,7 +68,7 @@ app.get('/movies', (req, res) => {
 
 //get single movie by title
 
-app.get('/movies/title/:Title', (req, res) => {
+app.get('/movies/title/:Title', passport.authenticate('jwt', { session: false}), (req, res) => {
   Movies.findOne({Title: req.params.Title })
   .then((movie) => {
     res.json(movie);
