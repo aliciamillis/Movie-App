@@ -15,3 +15,7 @@ responsiveness and used a mix of class and function components. It is hosted onl
 
 See documentation for specifc end-point information. 
 
+Visit this link for FULL Case-Study 
+
+https://www.canva.com/design/DAEX6HV3owA/qFMOjhkciZavZ53SfH3FvA/view?utm_campaign=designshare&utm_source=homepage_design_menu
+
